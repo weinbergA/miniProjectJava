@@ -9,7 +9,7 @@ import primitives.Ray;
 import primitives.Vector;
 
 /**
- * class of cylinder object 123
+ * class of cylinder object 2
  * 
  * @author Weinberg
  *
