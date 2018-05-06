@@ -7,6 +7,8 @@ public class Color {
 	protected double g;
 	protected double b;
 
+	public static Color white = new Color(255, 255, 255);
+
 	/********** Constructors ***********/
 	public Color(double R, double G, double B) {
 		r = R;
@@ -61,6 +63,7 @@ public class Color {
 			tempB = 255;
 		else
 			tempB = (int) b;
+
 		return new java.awt.Color(tempR, tempG, tempB);
 	}
 

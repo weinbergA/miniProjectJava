@@ -6,19 +6,22 @@ package unittests;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import elements.Camera;
+import geometries.Geometry;
 import geometries.Triangle;
+import primitives.Color;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
 /**
- * @author Weinberg
- *Testing two triangles from the presentation
+ * @author Weinberg Testing two triangles from the presentation
  */
 public class TriangleTest {
 
@@ -32,9 +35,11 @@ public class TriangleTest {
 
 		Camera camera = new Camera();
 
-		Triangle triangle = new Triangle(new Point3D(0, -1, -2), new Point3D(1, 1, -2), new Point3D(-1, 1, -2));
+		Triangle triangle = new Triangle(new Point3D(0, -1, -2), new Point3D(1, 1, -2), new Point3D(-1, 1, -2),
+				Color.white);
 
-		Triangle triangle2 = new Triangle(new Point3D(0, -20, -2), new Point3D(1, 1, -2), new Point3D(-1, 1, -2));
+		Triangle triangle2 = new Triangle(new Point3D(0, -20, -2), new Point3D(1, 1, -2), new Point3D(-1, 1, -2),
+				Color.white);
 
 		ArrayList<Point3D> intersectionPointsTriangle = new ArrayList<Point3D>();
 		ArrayList<Point3D> intersectionPointsTriangle2 = new ArrayList<Point3D>();
@@ -46,14 +51,18 @@ public class TriangleTest {
 
 				rays[i][j] = camera.constructRayThroughPixel(WIDTH, HEIGHT, j, i, 1, 3 * WIDTH, 3 * HEIGHT);
 
-				ArrayList<Point3D> rayIntersectionPoints = new ArrayList<Point3D>(triangle.findIntersections(rays[i][j]));
-				ArrayList<Point3D> rayIntersectionPoints2 = new ArrayList<Point3D>(triangle2.findIntersections(rays[i][j]));
+				Map<Geometry, List<Point3D>> point3ds = triangle.findIntersections(rays[i][j]);
+				for (Map.Entry<Geometry, List<Point3D>> points : point3ds.entrySet())
+					for (Point3D p : points.getValue())
+						intersectionPointsTriangle.add(p);
 
-				for (Point3D iPoint : rayIntersectionPoints)
-					intersectionPointsTriangle.add(iPoint);
+				Map<Geometry, List<Point3D>> point3ds1 = triangle2.findIntersections(rays[i][j]);
+				for (Map.Entry<Geometry, List<Point3D>> points : point3ds1.entrySet())
+					for (Point3D p : points.getValue())
+						intersectionPointsTriangle2.add(p);
 
-				for (Point3D iPoint : rayIntersectionPoints2)
-					intersectionPointsTriangle2.add(iPoint);
+
+				
 			}
 		}
 		System.out.println(intersectionPointsTriangle.size());
@@ -73,5 +82,5 @@ public class TriangleTest {
 		}
 
 	}
-	
+
 }

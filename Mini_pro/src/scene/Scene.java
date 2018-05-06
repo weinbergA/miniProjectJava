@@ -30,20 +30,11 @@ public class Scene {
 	 */
 	public Scene(String name) {
 		this._name = new String(name);
-		this._background = new Color(1, 2, 3);
+		this._background = new Color(0, 0, 0);
 		this._geometries = new Geometries();
 		this._camera = new Camera();
 		this._screenDistance = 1;
-		this._ambientLight = new AmbientLight(new Color(255, 255, 255), 1);
-	}
-
-	public Scene(Scene scene) {
-		this._name = new String(scene.getName());
-		this._background = new Color(scene.getColor());
-		this._geometries = new Geometries(scene.getGeometries());
-		this._camera = new Camera(scene.getCamera());
-		this._screenDistance = scene.getScreenDistance();
-		this._ambientLight = new AmbientLight(scene.getAmbientLight());
+		this._ambientLight = new AmbientLight(new Color(0, 0, 0), 1);
 	}
 
 	// ***************** Constructors ********************** //
@@ -52,14 +43,6 @@ public class Scene {
 	 */
 	public Color getColor() {
 		return _background;
-	}
-
-	/**
-	 * @param color
-	 *            the color to set
-	 */
-	public void setColor(Color color) {
-		this._background = color;
 	}
 
 	/**
@@ -96,6 +79,10 @@ public class Scene {
 		this._screenDistance = screenDistance;
 	}
 
+	public void setAmbientLight(Color color, double ka) {
+		this._ambientLight = new AmbientLight(color, ka);
+	}
+	
 	public void addGeometry(Geometry g) {
 		_geometries.addGeometry(g);
 	}

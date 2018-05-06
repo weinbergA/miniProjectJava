@@ -5,6 +5,7 @@ import primitives.Color;
 public class AmbientLight {
 	private Color _color;
 	private double Ka;
+	private Color _real;
 	
 	
 	/********** Constructors ***********/
@@ -13,17 +14,14 @@ public class AmbientLight {
 	 * @param ka
 	 */
 	public AmbientLight(Color color, double ka) {
-		this._color = new Color(color);
+		this._color = color;
 		Ka = ka;
+		_real = new Color(color).scale(ka);
 	}
 	
-	public AmbientLight(AmbientLight al) {
-		this(al.getColor(), al.getKa());
-	}
-
 	/************** Operations ***************/
 	public Color getIntensity() {
-		return _color.scale(Ka);
+		return _real;
 	}
 
 	/************** Getters/Setters *******/

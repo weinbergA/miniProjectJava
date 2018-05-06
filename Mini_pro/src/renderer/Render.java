@@ -27,12 +27,7 @@ public class Render {
 	/********** Constructors ***********/
 	public Render(ImageWriter imageWriter, Scene scene) {
 		_imageWriter = new ImageWriter(imageWriter);
-		_scene = new Scene(scene);
-	}
-
-	public Render(Render render) {
-		_imageWriter = new ImageWriter(render.get_imageWriter());
-		_scene = new Scene(render.get_scene());
+		_scene = scene;
 	}
 
 	/************** Getters/Setters *******/
@@ -55,11 +50,19 @@ public class Render {
 			for (int j = 0; j < _imageWriter.getNy(); j++) {
 				Ray ray = _scene.getCamera().constructRayThroughPixel(_imageWriter.getNx(), _imageWriter.getNy(), i, j,
 						_scene.getScreenDistance(), _imageWriter.getWidth(), _imageWriter.getHeight());
-				List<Point3D> intersectionPoints = getRayIntersections(ray);
-				if (intersectionPoints.isEmpty())
+				Map<Geometry, List<Point3D>> intersectionPoints = _scene.getGeometries().findIntersections(ray);
+				Boolean emptyMap = false;
+				for (Map.Entry<Geometry, List<Point3D>> entry : intersectionPoints.entrySet())
+					if (!entry.getValue().isEmpty())
+						emptyMap = true;
+				if (emptyMap == false)
 					_imageWriter.writePixel(i, j, _scene.getBackground().getColor());
-				else
-					_imageWriter.writePixel(i, j, calcColor(getClosestPoint(intersectionPoints)).getColor());
+				else {
+
+					Map<Geometry, Point3D> map = getClosestPoint(intersectionPoints);
+					Map.Entry<Geometry, Point3D> entry = map.entrySet().iterator().next();
+					_imageWriter.writePixel(i, j, calcColor(entry.getKey(), entry.getValue()).getColor());
+				}
 			}
 	}
 
@@ -79,7 +82,7 @@ public class Render {
 	}
 
 	private Color calcColor(Geometry geometry, Point3D point3d) {
-		Color color = _scene.getAmbientLight().getIntensity();
+		Color color = new Color(_scene.getAmbientLight().getIntensity());
 		color.add(geometry.getColor());
 		return color;
 	}
@@ -90,7 +93,6 @@ public class Render {
 		Map<Geometry, Point3D> map = new HashMap<Geometry, Point3D>();
 
 		Point3D p0 = _scene.getCamera().getP0();
-		Point3D minDistancePoint = null;
 
 		for (Map.Entry<Geometry, List<Point3D>> iPoints : intersectionPoints.entrySet())
 			for (Point3D iPoint : iPoints.getValue()) {

@@ -24,7 +24,7 @@ public abstract class Geometry {
 	 * @param _emmission
 	 *            color of object emmission
 	 */
-	public Geometry(Color _emmission) {
+	public Geometry(Color _emmission ) {
 		this._emmission = _emmission;
 	}
 

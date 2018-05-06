@@ -7,10 +7,13 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
 import elements.Camera;
+import geometries.Geometry;
 import geometries.Plane;
 import primitives.Color;
 import primitives.Point3D;
@@ -38,7 +41,7 @@ public class PlaneTest {
 		}
 
 		try {
-			Plane p1 = new Plane(a, d, e);
+			Plane p1 = new Plane(a, d, e, new Color(0, 0, 0));
 			fail("all of the points are on the same line");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
@@ -54,10 +57,10 @@ public class PlaneTest {
 
 		Camera camera = new Camera(Point3D.ZERO, new Vector(0, -1, 0), new Vector(0, 0, -1));
 
-		Plane plane = new Plane(new Point3D(0.0, 0.0, -3.0), new Vector(0.0, 0.0, -1.0));
+		Plane plane = new Plane(new Point3D(0.0, 0.0, -3.0), new Vector(0.0, 0.0, -1.0), new Color(0, 0, 0));
 
 		// 45 degrees to the view plane
-		Plane plane1 = new Plane(new Point3D(0.0, 0.0, -3.0), new Vector(0.0, 0.25, -1.0));
+		Plane plane1 = new Plane(new Point3D(0.0, 0.0, -3.0), new Vector(0.0, 0.25, -1.0), new Color(0, 0, 0));
 
 		ArrayList<Point3D> planeIntersections = new ArrayList<>();
 		ArrayList<Point3D> plane1Intersections = new ArrayList<>();
@@ -65,13 +68,16 @@ public class PlaneTest {
 		for (int i = 0; i < HIGHT; i++)
 			for (int j = 0; j < WIDTH; j++) {
 				rays[i][j] = camera.constructRayThroughPixel(WIDTH, HIGHT, j, i, 1, 2 * WIDTH, 2 * HIGHT);
-				ArrayList<Point3D> point3ds = new ArrayList<Point3D>(plane.findIntersections(rays[i][j]));
-				for (Point3D p : point3ds)
-					planeIntersections.add(p);
+				Map<Geometry, List<Point3D>> point3ds = plane.findIntersections(rays[i][j]);
+				for (Map.Entry<Geometry, List<Point3D>> points : point3ds.entrySet())
+					for (Point3D p : points.getValue())
+						planeIntersections.add(p);
 
-				ArrayList<Point3D> point3ds1 = new ArrayList<Point3D>(plane1.findIntersections(rays[i][j]));
-				for (Point3D p : point3ds1)
-					plane1Intersections.add(p);
+				Map<Geometry, List<Point3D>> point3ds1 = plane1.findIntersections(rays[i][j]);
+				for (Map.Entry<Geometry, List<Point3D>> points : point3ds1.entrySet())
+					for (Point3D p : points.getValue())
+						planeIntersections.add(p);
+
 
 			}
 		System.out.println(planeIntersections.size());
