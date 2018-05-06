@@ -10,6 +10,12 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
+/**
+ * class for triangle geometry
+ * 
+ * @author Weinberg
+ *
+ */
 public class Triangle extends Plane {
 
 	private Point3D _p1;
@@ -17,6 +23,13 @@ public class Triangle extends Plane {
 	private Point3D _p3;
 
 	/********** Constructors ***********/
+	/**
+	 * main constructor
+	 * @param a 1st point
+	 * @param b 2nd point
+	 * @param c 3rd point
+	 * @param color color of the triangle
+	 */
 	public Triangle(Point3D a, Point3D b, Point3D c, Color color) {
 		super(a, b, c, color);
 		_p1 = new Point3D(a);
@@ -25,7 +38,7 @@ public class Triangle extends Plane {
 	}
 
 	/************** Getters/Setters *******/
-	/**
+	/** get 1st point
 	 * @return the _p1
 	 */
 	public Point3D getP1() {
@@ -33,6 +46,7 @@ public class Triangle extends Plane {
 	}
 
 	/**
+	 * get 2nd point
 	 * @return the _p2
 	 */
 	public Point3D getP2() {
@@ -40,6 +54,7 @@ public class Triangle extends Plane {
 	}
 
 	/**
+	 * get 3rd point
 	 * @return the _p3
 	 */
 	public Point3D getP3() {
@@ -47,6 +62,14 @@ public class Triangle extends Plane {
 	}
 
 	/************** Admin **********/
+	/**
+	 * get intersections points from ray to geometry
+	 * 
+	 * @param ray
+	 *            the ray to calculate from
+	 * 
+	 * @return map of geometry and list of the intersections points
+	 */
 	@Override
 	public Map<Geometry, List<Point3D>> findIntersections(Ray ray) {
 		List<Point3D> points = new ArrayList<Point3D>(super.findIntersections(ray).get(this));

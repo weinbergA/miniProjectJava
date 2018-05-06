@@ -15,6 +15,8 @@ import primitives.Ray;
 import primitives.Vector;
 
 /**
+ * class of sphere geometry
+ * 
  * @author Weinberg
  *
  */
@@ -23,17 +25,36 @@ public class Sphere extends RadialGeometry {
 	private Point3D _center;
 
 	/********** Constructors ***********/
+	/**
+	 * main contractor
+	 * @param _centre centre of the sphere
+	 * @param radius radius of the sphere
+	 * @param color color of the sphere
+	 */
 	public Sphere(Point3D _centre, double radius, Color color) {
 		super(radius, color);
 		this._center = new Point3D(_centre);
 	}
 
 	/************** Getters/Setters *******/
+	/**
+	 * get centre
+	 * @return centre point
+	 */
 	public Point3D getCenter() {
 		return _center;
 	}
 
 	/*************** Admin *****************/
+
+	/**
+	 * get normal vector from ray to geometry in point
+	 * 
+	 * @param point3d
+	 *            point to get normal
+	 * 
+	 * @return the normal vector
+	 */
 	@Override
 	public Vector getNormal(Point3D point3d) {
 		Vector N = new Vector(_center.sub(point3d));
@@ -41,6 +62,14 @@ public class Sphere extends RadialGeometry {
 		return N;
 	}
 
+	/**
+	 * get intersections points from ray to geometry
+	 * 
+	 * @param ray
+	 *            the ray to calculate from
+	 * 
+	 * @return map of geometry and list of the intersections points
+	 */
 	@Override
 	public Map<Geometry, List<Point3D>> findIntersections(Ray ray) {
 
